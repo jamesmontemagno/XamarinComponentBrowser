@@ -13,6 +13,9 @@ using XamarinComponentBrowser.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Xamarin.Forms;
+using Ooui.AspNetCore;
+
 namespace XamarinComponentBrowser
 {
     public class Startup
@@ -62,6 +65,9 @@ namespace XamarinComponentBrowser
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseOoui();
+            Forms.Init();
 
             app.UseMvc(routes =>
             {
