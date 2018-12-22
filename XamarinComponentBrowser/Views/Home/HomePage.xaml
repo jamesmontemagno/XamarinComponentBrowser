@@ -1,12 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="XamarinComponentBrowser.Views.Home.HomePage">
+             xmlns:viewmodels="clr-namespace:XamarinComponentBrowser.ViewModels"
+             xmlns:ooui="clr-namespace:Ooui.Forms;assembly=Ooui.Forms"
+             x:Class="XamarinComponentBrowser.Views.Home.HomePage"
+             BackgroundColor="LightGray">
+    <ContentPage.BindingContext>
+        <viewmodels:HomeViewModel/>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid HorizontalOptions="Center" WidthRequest="700">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Margin="50" HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Text="Welcome to Component Browser"/>
+            <StackLayout Grid.Row="1" 
+                         Orientation="Horizontal">
+                <Entry Placeholder="Search for awesome" 
+                       HorizontalOptions="FillAndExpand"/>
+                <Button Text="Search"/>
+            </StackLayout>
+
+            <StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="Center">
+                <Button Text="Android" WidthRequest="150"/>
+                <Button Text="iOS" WidthRequest="150"/>
+                <Button Text="UWP" WidthRequest="150"/>
+            </StackLayout>
+            <ListView Grid.Row="3" BackgroundColor="LightGray" ItemsSource="{Binding Components}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                <Image Source="{Binding IconUrl}" 
+                                           HeightRequest="66" 
+                                           WidthRequest="66"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           Aspect="AspectFit"/>
+                                <StackLayout>
+                                    <ooui:LinkLabel Text="{Binding Name}" 
+                                                        HRef="{Binding NuGetUrl}"/>
+                                    <Label Text="{Binding Summary}"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

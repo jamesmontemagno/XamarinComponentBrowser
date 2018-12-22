@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using XamarinComponentBrowser.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Xamarin.Forms;
-using Ooui.AspNetCore;
+using XamarinComponentBrowser.Interfaces;
+using XamarinComponentBrowser.Services.Design;
 
 namespace XamarinComponentBrowser
 {
@@ -36,12 +29,7 @@ namespace XamarinComponentBrowser
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+           
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -52,7 +40,6 @@ namespace XamarinComponentBrowser
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -64,10 +51,11 @@ namespace XamarinComponentBrowser
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseAuthentication();
 
             app.UseOoui();
             Forms.Init();
+
+            DependencyService.Register<IComponentService, DesignComponentService>();
 
             app.UseMvc(routes =>
             {
